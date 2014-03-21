@@ -15,7 +15,10 @@
                     left: 0,
                     opacity: 0,
                     width: "100%",
-                    height: "auto",
+                    height: "auto"
+                },
+
+                transition: {
                     transition: "opacity .5s linear"
                 }
             }
@@ -101,21 +104,24 @@
     };
 
     ImgFit.prototype.fit = function(container) {
-        var image = container.children[0];
+        var self = this,
+            image = container.children[0];
 
         this.setStyle(container, this.settings.style.container);
         this.setStyle(image, this.settings.style.image);
 
-        if(image.offsetWidth > 0 && container.offsetWidth === image.offsetWidth) {
-            this.setPosition(container, image);
-        }
-        else {
-            var _this = this;
+        setTimeout(function() {
+            self.setStyle(image, self.settings.style.transition);
 
-            image.onload = function() {
-                _this.setPosition(container, image);
-            };
-        }
+            if(image.offsetWidth > 0 && container.offsetWidth === image.offsetWidth) {
+                self.setPosition(container, image);
+            }
+            else {
+                image.onload = function() {
+                    self.setPosition(container, image);
+                };
+            }
+        });
     };
 
     ImgFit.prototype.init = function(target) {
