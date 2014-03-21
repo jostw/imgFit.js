@@ -106,12 +106,12 @@
         this.setStyle(container, this.settings.style.container);
         this.setStyle(image, this.settings.style.image);
 
-        var _this = this;
-
-        if(container.offsetWidth === image.offsetWidth) {
+        if(image.offsetWidth > 0 && container.offsetWidth === image.offsetWidth) {
             this.setPosition(container, image);
         }
         else {
+            var _this = this;
+
             image.onload = function() {
                 _this.setPosition(container, image);
             };
