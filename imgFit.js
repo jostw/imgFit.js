@@ -19,7 +19,7 @@
                 },
 
                 transition: {
-                    transition: "opacity .5s linear"
+                    transition: "opacity .2s linear"
                 }
             }
         };
@@ -136,3 +136,4 @@
 
     window.imgFit = new ImgFit();
 })();
+
