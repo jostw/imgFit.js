@@ -84,22 +84,31 @@
     };
 
     ImgFit.prototype.setPosition = function(container, image) {
-        if(image.width / image.height <= container.clientWidth / container.clientHeight) {
-            this.setStyle(image, {
-                top: "50%",
-                opacity: 1,
-                marginTop: -image.height / 2 + "px"
-            });
+        if(image.offsetHeight === 0) {
+            var self = this;
+
+            setTimeout(function() {
+                self.setPosition(container, image);
+            }, 100);
         }
         else {
-            this.setStyle(image, {
-                left: "50%",
-                opacity: 1,
-                width: "auto",
-                height: "100%"
-            });
+            if(image.offsetWidth / image.offsetHeight <= container.offsetWidth / container.offsetHeight) {
+                this.setStyle(image, {
+                    top: "50%",
+                    opacity: 1,
+                    marginTop: -image.offsetHeight / 2 + "px"
+                });
+            }
+            else {
+                this.setStyle(image, {
+                    left: "50%",
+                    opacity: 1,
+                    width: "auto",
+                    height: "100%"
+                });
 
-            image.style.marginLeft = -image.width / 2 + "px";
+                image.style.marginLeft = -image.offsetWidth / 2 + "px";
+            }
         }
     };
 
@@ -113,7 +122,7 @@
         setTimeout(function() {
             self.setStyle(image, self.settings.style.transition);
 
-            if(image.offsetWidth > 0 && container.offsetWidth === image.offsetWidth) {
+            if(image.offsetWidth > 0 && image.offsetWidth === container.offsetWidth) {
                 self.setPosition(container, image);
             }
             else {
