@@ -122,14 +122,12 @@
         setTimeout(function() {
             self.setStyle(image, self.settings.style.transition);
 
-            if(image.offsetWidth > 0 && image.offsetWidth === container.offsetWidth) {
+            if(image.offsetWidth > 0 && image.offsetWidth === container.offsetWidth)
                 self.setPosition(container, image);
-            }
-            else {
-                image.onload = function() {
-                    self.setPosition(container, image);
-                };
-            }
+
+            image.onload = function() {
+                self.setPosition(container, image);
+            };
         });
     };
 
