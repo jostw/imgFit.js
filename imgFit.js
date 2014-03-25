@@ -77,8 +77,8 @@
         for(i in currentStyle) {
             margin = i.split("margin-");
 
-	    if(margin.length === 1)
-		margin = i.split("margin");
+            if(margin.length === 1)
+                margin = i.split("margin");
 
             tempStyle.push((margin.length > 1 ? "margin-"+ margin[1].toLowerCase() : i) +": "+ currentStyle[i]);
         }
@@ -116,7 +116,8 @@
 
     ImgFit.prototype.fit = function(container) {
         var self = this,
-            image = container.children[0];
+            image = container.children[0],
+            isLoad = false;
 
         this.setStyle(container, this.settings.style.container);
         this.setStyle(image, this.settings.style.image);
@@ -124,12 +125,15 @@
         setTimeout(function() {
             self.setStyle(image, self.settings.style.transition);
 
-            if(image.offsetWidth > 0 && image.offsetWidth === container.offsetWidth)
-                self.setPosition(container, image);
-
             image.onload = function() {
+                isLoad = true;
                 self.setPosition(container, image);
             };
+
+            setTimeout(function() {
+                if(!isLoad)
+                    self.setPosition(container, image);
+            }, 500);
         });
     };
 
