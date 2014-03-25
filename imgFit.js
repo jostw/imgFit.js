@@ -96,7 +96,7 @@
                 this.setStyle(image, {
                     top: "50%",
                     opacity: 1,
-                    marginTop: -image.offsetHeight / 2 + "px"
+                    marginTop: -image.offsetHeight / 2 +"px"
                 });
             }
             else {
@@ -104,10 +104,9 @@
                     left: "50%",
                     opacity: 1,
                     width: "auto",
-                    height: "100%"
+                    height: "100%",
+                    marginLeft: -(container.offsetHeight * image.offsetWidth / image.offsetHeight) / 2 +"px"
                 });
-
-                image.style.marginLeft = -image.offsetWidth / 2 + "px";
             }
         }
     };
@@ -143,4 +142,3 @@
 
     window.imgFit = new ImgFit();
 })();
-
