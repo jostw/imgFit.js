@@ -75,7 +75,10 @@
         }
 
         for(i in currentStyle) {
-            margin = i.split("margin");
+            margin = i.split("margin-");
+
+	    if(margin.length === 1)
+		margin = i.split("margin");
 
             tempStyle.push((margin.length > 1 ? "margin-"+ margin[1].toLowerCase() : i) +": "+ currentStyle[i]);
         }
