@@ -116,8 +116,7 @@
 
     ImgFit.prototype.fit = function(container) {
         var self = this,
-            image = container.children[0],
-            isLoad = false;
+            image = container.children[0];
 
         this.setStyle(container, this.settings.style.container);
         this.setStyle(image, this.settings.style.image);
@@ -125,15 +124,15 @@
         setTimeout(function() {
             self.setStyle(image, self.settings.style.transition);
 
-            image.onload = function() {
-                isLoad = true;
+            if(image.complete) {
                 self.setPosition(container, image);
-            };
-
-            setTimeout(function() {
-                if(!isLoad)
+            }
+            else {
+                image.onload = function() {
+                    isLoad = true;
                     self.setPosition(container, image);
-            }, 500);
+                };
+            }
         });
     };
 
