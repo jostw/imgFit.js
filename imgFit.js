@@ -26,6 +26,9 @@
     };
 
     ImgFit.prototype.getPrefix = function() {
+        if(!window.getComputedStyle)
+            return "";
+
         var style = window.getComputedStyle(document.documentElement),
             match = Array.prototype.join.call(style, "").match(/-(?:o|moz|webkit|ms)-/i);
 
@@ -139,7 +142,7 @@
     ImgFit.prototype.init = function(target) {
         this.prefix = this.getPrefix();
 
-        var img = document.getElementsByClassName(target),
+        var img = document.querySelectorAll(target),
             i = 0, length = img.length;
 
         for( ; i < length; i++)
