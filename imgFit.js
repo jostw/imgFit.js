@@ -2,8 +2,8 @@
     "use strict";
 
     var ImgFit = function() {
-        this.settings = {
-            style: {
+        var prefix = getPrefix(),
+            style = {
                 container: {
                     position: "relative",
                     overflow: "hidden"
@@ -18,14 +18,19 @@
                     height: "auto"
                 },
 
-                transition: {
-                    transition: "opacity .2s linear"
-                }
-            }
-        };
+                transition: {}
+            };
+
+        style.transition[prefix +"transition-property"] = "opacity";
+        style.transition[prefix +"transition-duration"] = ".2s";
+        style.transition[prefix +"transition-timing-function"] = "linear";
+        style.transition[prefix +"transition-delay"] = 0;
+
+        this.prefix = prefix;
+        this.settings = { style: style };
     };
 
-    ImgFit.prototype.getPrefix = function() {
+    var getPrefix = function() {
         if(!window.getComputedStyle)
             return "";
 
@@ -33,6 +38,10 @@
             match = Array.prototype.join.call(style, "").match(/-(?:o|moz|webkit|ms)-/i);
 
         return match && match[0];
+    };
+
+    var toCamel = function(string) {
+        return string.replace(/(\-[a-z])/g, function($1) { return $1.toUpperCase().replace("-", ""); });
     };
 
     ImgFit.prototype.getStyle = function(element) {
@@ -57,24 +66,20 @@
 
     ImgFit.prototype.setStyle = function(element, style) {
         var i, match,
+            computedStyle = window.getComputedStyle(element),
             currentStyle = this.getStyle(element),
             tempStyle = [];
 
         for(i in style) {
-            if(i === "transition") {
-                var prefixTrans = this.prefix + i;
-
-                style[prefixTrans] = style[i];
-
-                delete style[i];
-
-                i = prefixTrans;
+            if(i.match(/transition/)) {
+                currentStyle[i] = computedStyle[toCamel(i)] +", "+ style[i];
             }
+            else {
+                if(currentStyle[i])
+                    delete currentStyle[i];
 
-            if(currentStyle[i])
-                delete currentStyle[i];
-
-            currentStyle[i] = style[i];
+                currentStyle[i] = style[i];
+            }
         }
 
         for(i in currentStyle) {
@@ -129,7 +134,6 @@
             }
             else {
                 image.onload = function() {
-                    isLoad = true;
                     self.setPosition(container, image);
                 };
             }
@@ -137,8 +141,6 @@
     };
 
     ImgFit.prototype.init = function(target) {
-        this.prefix = this.getPrefix();
-
         var img = document.querySelectorAll(target),
             i = 0, length = img.length;
 
