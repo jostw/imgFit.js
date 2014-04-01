@@ -56,7 +56,7 @@
     };
 
     ImgFit.prototype.setStyle = function(element, style) {
-        var i, margin,
+        var i, match,
             currentStyle = this.getStyle(element),
             tempStyle = [];
 
@@ -78,12 +78,9 @@
         }
 
         for(i in currentStyle) {
-            margin = i.split("margin-");
+            match = i.match(/margin-|margin/);
 
-            if(margin.length === 1)
-                margin = i.split("margin");
-
-            tempStyle.push((margin.length > 1 ? "margin-"+ margin[1].toLowerCase() : i) +": "+ currentStyle[i]);
+            tempStyle.push((match ? "margin-"+ i.split(match[0])[1].toLowerCase() : i) +": "+ currentStyle[i]);
         }
 
         element.setAttribute("style", tempStyle.join("; "));
