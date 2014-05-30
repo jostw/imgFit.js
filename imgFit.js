@@ -103,7 +103,8 @@
                 this.setStyle(image, {
                     top: "50%",
                     opacity: 1,
-                    marginTop: -image.offsetHeight / 2 +"px"
+                    marginTop: -image.offsetHeight / 2 +"px",
+                    marginLeft: 0
                 });
             }
             else {
@@ -112,6 +113,7 @@
                     opacity: 1,
                     width: "auto",
                     height: "100%",
+                    marginTop: 0,
                     marginLeft: -(container.offsetHeight * image.offsetWidth / image.offsetHeight) / 2 +"px"
                 });
             }
